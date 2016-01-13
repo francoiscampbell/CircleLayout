@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.jfrog.bintray'
 
 group 'io.github.francoiscampbell'
-version '0.1'
+version '0.1.1'
 def gitTag = "v$version"
 
 repositories {
