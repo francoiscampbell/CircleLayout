@@ -14,25 +14,21 @@ public class CircleLayout extends ViewGroup {
     /**
      * The type of override for the radius of the circle
      */
-    private enum RadiusOverride {
-        FITS_SMALLEST_CHILD(0), FITS_LARGEST_CHILD(1);
+    private static final int FITS_SMALLEST_CHILD = 0;
+    private static final int FITS_LARGEST_CHILD = 1;
 
-        private int value;
-
-        RadiusOverride(int value) {
-            this.value = value;
-        }
-
-        public int getValue() {
-            return value;
-        }
-    }
+    /**
+     * The direction of rotation, 1 for counter-clockwise, -1 for clockwise
+     */
+    private static final int COUNTER_CLOCKWISE = 1;
+    private static final int CLOCKWISE = -1;
 
     private int centerViewId;
     private float angle;
     private float angleOffset;
     private int fixedRadius;
     private int radiusOverride;
+    private int direction;
 
     /**
      * Initializes this layout
@@ -64,7 +60,8 @@ public class CircleLayout extends ViewGroup {
         angle = (float) Math.toRadians(attributes.getFloat(R.styleable.CircleLayout_angle, 0));
         angleOffset = (float) Math.toRadians(attributes.getFloat(R.styleable.CircleLayout_angleOffset, 0));
         fixedRadius = attributes.getDimensionPixelSize(R.styleable.CircleLayout_radius, 0);
-        radiusOverride = attributes.getInt(R.styleable.CircleLayout_radiusOverride, RadiusOverride.FITS_LARGEST_CHILD.getValue());
+        radiusOverride = attributes.getInt(R.styleable.CircleLayout_radiusOverride, FITS_LARGEST_CHILD);
+        direction = attributes.getInt(R.styleable.CircleLayout_direction, CLOCKWISE);
         attributes.recycle();
     }
 
@@ -120,10 +117,10 @@ public class CircleLayout extends ViewGroup {
         //choose radius
         int layoutRadius = fixedRadius;
         if (layoutRadius == 0) {
-            if (radiusOverride == RadiusOverride.FITS_LARGEST_CHILD.value) {
+            if (radiusOverride == FITS_LARGEST_CHILD) {
                 layoutRadius = outerRadius - maxChildRadius;
             }
-            if (radiusOverride == RadiusOverride.FITS_SMALLEST_CHILD.value) {
+            if (radiusOverride == FITS_SMALLEST_CHILD) {
                 layoutRadius = outerRadius - minChildRadius;
             }
         }
@@ -163,7 +160,7 @@ public class CircleLayout extends ViewGroup {
             int childCenterY = polarToY(radius, currentAngle);
             ViewUtils.layoutFromCenter(child, cx + childCenterX, cy - childCenterY);
 
-            currentAngle += angleIncrement;
+            currentAngle += angleIncrement * direction;
         }
     }
 
