@@ -8,92 +8,53 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     cl:cl_angleOffset="90"
-    cl:cl_direction="clockwise">
+    cl:cl_direction="clockwise"
+    cl:cl_centerView="@+id/centerView">
+
+    <Switch
+        android:id="@+id/centerView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="12"
-        android:textColor="#FF0000"
-        android:textSize="24sp" />
+        android:textColor="@color/testTextColor"
+        android:textSize="@dimen/clockTestSize" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="1"
-        android:textColor="#FF0000"
-        android:textSize="24sp" />
+        android:textColor="@color/testTextColor"
+        android:textSize="@dimen/clockTestSize" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="2"
-        android:textColor="#FF0000"
-        android:textSize="24sp" />
+        android:textColor="@color/testTextColor"
+        android:textSize="@dimen/clockTestSize" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="3"
-        android:textColor="#FF0000"
-        android:textSize="24sp" />
+        android:textColor="@color/testTextColor"
+        android:textSize="@dimen/clockTestSize" />
 
-    <TextView
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="4"
-        android:textColor="#FF0000"
-        android:textSize="24sp" />
+        android:text="Button" />
 
-    <TextView
+    <CheckBox
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="5"
-        android:textColor="#FF0000"
-        android:textSize="24sp" />
+        android:layout_height="wrap_content" />
 
-    <TextView
+    <SeekBar
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="6"
-        android:textColor="#FF0000"
-        android:textSize="24sp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="7"
-        android:textColor="#FF0000"
-        android:textSize="24sp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="8"
-        android:textColor="#FF0000"
-        android:textSize="24sp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="9"
-        android:textColor="#FF0000"
-        android:textSize="24sp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="10"
-        android:textColor="#FF0000"
-        android:textSize="24sp"
-        android:visibility="visible" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="11"
-        android:textColor="#FF0000"
-        android:textSize="24sp" />
-
+        android:layout_height="wrap_content" />
 
 </io.github.francoiscampbell.circlelayout.CircleLayout>
