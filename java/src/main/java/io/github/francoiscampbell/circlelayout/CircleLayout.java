@@ -2,7 +2,6 @@ package io.github.francoiscampbell.circlelayout;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Point;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,7 +69,7 @@ public class CircleLayout extends ViewGroup {
 
         View centerView = findViewById(centerViewId);
         if (centerView != null) {
-            layoutAtCenter(centerView, centerX, centerY);
+            ViewUtils.layoutAtCenter(centerView, centerX, centerY);
         }
 
         int childCount = getChildCount();
@@ -80,10 +79,12 @@ public class CircleLayout extends ViewGroup {
         int maxChildRadius = 0;
         for (int i = 0; i < childCount; i++) {
             View child = getChildAt(i);
-            if (child != null && (child.getId() != centerViewId || child.getId() == View.NO_ID) && child.getVisibility() != GONE) {
+            if (child != null
+                    && (child.getId() != centerViewId || child.getId() == View.NO_ID)
+                    && child.getVisibility() != GONE) {
                 childrenToLayout[childIndex++] = child;
             }
-            int childRadius = getRadius(child);
+            int childRadius = ViewUtils.getRadius(child);
             if (childRadius > maxChildRadius) {
                 maxChildRadius = childRadius;
             }
@@ -116,42 +117,27 @@ public class CircleLayout extends ViewGroup {
         return 2 * (float) Math.PI / numViews;
     }
 
-    private void layoutChildrenAtAngle(int cx, int cy, float angleIncremnt, float angleOffset, int radius, View[] children) {
+    private void layoutChildrenAtAngle(int cx, int cy, float angleIncrement, float angleOffset, int radius, View[] children) {
         float currentAngle = angleOffset;
         for (View child : children) {
             if (child == null) {
                 continue;
             }
 
-            Point childCenter = toPoint(radius, currentAngle);
-            layoutAtCenter(child, cx + childCenter.x, cy - childCenter.y);
+            int childCenterX = polarToX(radius, currentAngle);
+            int childCenterY = polarToY(radius, currentAngle);
+            ViewUtils.layoutAtCenter(child, cx + childCenterX, cy - childCenterY);
 
-            currentAngle += angleIncremnt;
+            currentAngle += angleIncrement;
         }
     }
 
-    private static int getRadius(View view) {
-        return Math.max(view.getMeasuredWidth(), view.getMeasuredHeight()) / 2;
+    public int polarToX(float radius, float angle) {
+        return (int) (radius * Math.cos(angle));
     }
 
-    private static void layoutAtCenter(View view, int cx, int cy) {
-        int left = cx - view.getMeasuredWidth() / 2;
-        int top = cy - view.getMeasuredHeight() / 2;
-        int right = left + view.getMeasuredWidth();
-        int bottom = top + view.getMeasuredHeight();
-        view.layout(left, top, right, bottom);
-    }
-
-    public Point toPoint(float radius, float angle) {
-        int newX = (int) (radius * Math.cos(angle));
-        int newY = (int) (radius * Math.sin(angle));
-        return new Point(newX, newY);
-    }
-
-    public float getOvalRadiusAtAngle(int semiMajorAxis, int semiMinorAxis, float angle) {
-        float sin = (float) Math.sin(angle);
-        float cos = (float) Math.cos(angle);
-        return semiMajorAxis * semiMinorAxis / (float) Math.sqrt(semiMinorAxis * semiMinorAxis * cos * cos + semiMajorAxis * semiMajorAxis * sin * sin);
+    public int polarToY(float radius, float angle) {
+        return (int) (radius * Math.sin(angle));
     }
 }
 
