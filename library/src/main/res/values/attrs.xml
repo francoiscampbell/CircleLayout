@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="CircleLayout">
-        <attr name="centerView" format="reference" />
+    <declare-styleable name="cl_CircleLayout">
+        <attr name="cl_centerView" format="reference" />
 
-        <attr name="angle" format="float" />
-        <attr name="angleOffset" format="float" />
+        <attr name="cl_angle" format="float" />
+        <attr name="cl_angleOffset" format="float" />
 
-        <attr name="radius" format="dimension" />
-        <attr name="radiusOverride">
+        <attr name="cl_radius" format="dimension" />
+        <attr name="cl_radiusOverride">
             <enum name="fitsSmallestChild" value="0" />
             <enum name="fitsLargestChild" value="1" />
         </attr>
-        <attr name="direction">
+        <attr name="cl_direction">
             <enum name="clockwise" value="-1" />
             <enum name="counterClockwise" value="1" />
         </attr>

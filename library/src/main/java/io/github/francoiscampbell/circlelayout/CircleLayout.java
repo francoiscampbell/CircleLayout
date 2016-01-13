@@ -55,13 +55,13 @@ public class CircleLayout extends ViewGroup {
      */
     public CircleLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        TypedArray attributes = context.obtainStyledAttributes(attrs, R.styleable.CircleLayout, defStyleAttr, 0);
-        centerViewId = attributes.getResourceId(R.styleable.CircleLayout_centerView, View.NO_ID);
-        angle = (float) Math.toRadians(attributes.getFloat(R.styleable.CircleLayout_angle, 0));
-        angleOffset = (float) Math.toRadians(attributes.getFloat(R.styleable.CircleLayout_angleOffset, 0));
-        fixedRadius = attributes.getDimensionPixelSize(R.styleable.CircleLayout_radius, 0);
-        radiusOverride = attributes.getInt(R.styleable.CircleLayout_radiusOverride, FITS_LARGEST_CHILD);
-        direction = attributes.getInt(R.styleable.CircleLayout_direction, CLOCKWISE);
+        TypedArray attributes = context.obtainStyledAttributes(attrs, R.styleable.cl_CircleLayout, defStyleAttr, 0);
+        centerViewId = attributes.getResourceId(R.styleable.cl_CircleLayout_cl_centerView, View.NO_ID);
+        angle = (float) Math.toRadians(attributes.getFloat(R.styleable.cl_CircleLayout_cl_angle, 0));
+        angleOffset = (float) Math.toRadians(attributes.getFloat(R.styleable.cl_CircleLayout_cl_angleOffset, 0));
+        fixedRadius = attributes.getDimensionPixelSize(R.styleable.cl_CircleLayout_cl_radius, 0);
+        radiusOverride = attributes.getInt(R.styleable.cl_CircleLayout_cl_radiusOverride, FITS_LARGEST_CHILD);
+        direction = attributes.getInt(R.styleable.cl_CircleLayout_cl_direction, CLOCKWISE);
         attributes.recycle();
     }
 
