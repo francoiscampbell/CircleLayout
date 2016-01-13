@@ -8,13 +8,12 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     cl:cl_angleOffset="90"
-    cl:cl_direction="clockwise"
-    cl:cl_radius="100dp">
+    cl:cl_direction="clockwise">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="0"
+        android:text="12"
         android:textColor="#FF0000"
         android:textSize="24sp" />
 
@@ -84,15 +83,15 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="OK"
+        android:text="10"
         android:textColor="#FF0000"
         android:textSize="24sp"
-        android:visibility="invisible" />
+        android:visibility="visible" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="00"
+        android:text="11"
         android:textColor="#FF0000"
         android:textSize="24sp" />
 

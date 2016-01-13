@@ -7,7 +7,7 @@
         <attr name="cl_angleOffset" format="float" />
 
         <attr name="cl_radius" format="dimension" />
-        <attr name="cl_radiusOverride">
+        <attr name="cl_radiusPreset">
             <enum name="fitsSmallestChild" value="0" />
             <enum name="fitsLargestChild" value="1" />
         </attr>
