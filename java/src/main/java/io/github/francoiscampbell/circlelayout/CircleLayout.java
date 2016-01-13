@@ -7,9 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * Created by francois on 2016-01-12.
+ * A layout that lays out its children in a circle
  */
 public class CircleLayout extends ViewGroup {
+
+    /**
+     * The type of override for the radius of the circle
+     */
     private enum RadiusOverride {
         FITS_SMALLEST_CHILD(0), FITS_LARGEST_CHILD(1);
 
@@ -30,14 +34,29 @@ public class CircleLayout extends ViewGroup {
     private int fixedRadius;
     private int radiusOverride;
 
+    /**
+     * Initializes this layout
+     * @param context A view context. Cannot be an application context.
+     */
     public CircleLayout(Context context) {
         this(context, null);
     }
 
+    /**
+     * Initializes this layout
+     * @param context A view context. Cannot be an application context.
+     * @param attrs The set of attributes to customize the layout
+     */
     public CircleLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
+    /**
+     * Initializes this layout
+     * @param context A view context. Cannot be an application context.
+     * @param attrs The set of attributes to customize the layout
+     * @param defStyleAttr The default style to use
+     */
     public CircleLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         TypedArray attributes = context.obtainStyledAttributes(attrs, R.styleable.CircleLayout, defStyleAttr, 0);
@@ -48,7 +67,6 @@ public class CircleLayout extends ViewGroup {
         radiusOverride = attributes.getInt(R.styleable.CircleLayout_radiusOverride, RadiusOverride.FITS_LARGEST_CHILD.getValue());
         attributes.recycle();
     }
-
 
     public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         measureChildren(widthMeasureSpec, heightMeasureSpec);
@@ -69,7 +87,7 @@ public class CircleLayout extends ViewGroup {
 
         View centerView = findViewById(centerViewId);
         if (centerView != null) {
-            ViewUtils.layoutAtCenter(centerView, centerX, centerY);
+            ViewUtils.layoutFromCenter(centerView, centerX, centerY);
         }
 
         int childCount = getChildCount();
@@ -113,10 +131,27 @@ public class CircleLayout extends ViewGroup {
         layoutChildrenAtAngle(centerX, centerY, angleIncrement, angleOffset, layoutRadius, childrenToLayout);
     }
 
-    private float getEqualAngle(int numViews) {
-        return 2 * (float) Math.PI / numViews;
+    /**
+     * Splits a circle into {@code n} equal slices
+     * @param n The number of slices in which to divide the circle
+     * @return The angle between two adjacent slices, or 2*pi if {@code n} is zero
+     */
+    private float getEqualAngle(int n) {
+        if (n == 0) {
+            n = 1;
+        }
+        return 2 * (float) Math.PI / n;
     }
 
+    /**
+     * Lays out the visible child views along the circle
+     * @param cx The X coordinate of the center of the circle
+     * @param cy The Y coordinate of the center of the circle
+     * @param angleIncrement The angle increment between two adjacent children
+     * @param angleOffset The starting offset angle from the horizontal axis
+     * @param radius The radius of the circle along which the centers of the children will be placed
+     * @param children The views to layout. Any null views are ignored
+     */
     private void layoutChildrenAtAngle(int cx, int cy, float angleIncrement, float angleOffset, int radius, View[] children) {
         float currentAngle = angleOffset;
         for (View child : children) {
@@ -126,16 +161,28 @@ public class CircleLayout extends ViewGroup {
 
             int childCenterX = polarToX(radius, currentAngle);
             int childCenterY = polarToY(radius, currentAngle);
-            ViewUtils.layoutAtCenter(child, cx + childCenterX, cy - childCenterY);
+            ViewUtils.layoutFromCenter(child, cx + childCenterX, cy - childCenterY);
 
             currentAngle += angleIncrement;
         }
     }
 
+    /**
+     * Gets the X coordinate from a set of polar coordinates
+     * @param radius The polar radius
+     * @param angle The polar angle
+     * @return The equivalent X coordinate
+     */
     public int polarToX(float radius, float angle) {
         return (int) (radius * Math.cos(angle));
     }
 
+    /**
+     * Gets the Y coordinate from a set of polar coordinates
+     * @param radius The polar radius
+     * @param angle The polar angle
+     * @return The equivalent Y coordinate
+     */
     public int polarToY(float radius, float angle) {
         return (int) (radius * Math.sin(angle));
     }
