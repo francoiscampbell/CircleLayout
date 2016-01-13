@@ -1,9 +1,16 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
-group 'io.github.francoiscampbell'
-version '0.1.1'
+def githubUrl = 'https://github.com/francoiscampbell/CircleLayout'
+def gitUrl = "${githubUrl}.git"
 def gitTag = "v$version"
+
+def projectFriendlyName = 'CircleLayout'
+def projectDescription = 'An Android layout for arranging children along a circle'
+
+group 'io.github.francoiscampbell'
+version '0.1.2'
 
 repositories {
     maven {
@@ -20,7 +27,8 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.2'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.5'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.3'
     }
 }
 
@@ -39,27 +47,6 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-}
-
-bintray {
-    user = project.BINTRAY_USER
-    key = project.BINTRAY_KEY
-
-    configurations = ['archives']
-    publish = true
-    pkg {
-        repo = 'maven'
-        name = 'io.github.francoiscampbell:circlelayout'
-        licenses = ['BSD 2-Clause']
-        vcsUrl = 'https://github.com/francoiscampbell/CircleLayout.git'
-        //noinspection GroovyAssignabilityCheck
-        version {
-            name = project.version
-            desc = 'An Android layout for arranging children along a circle'
-            released = new Date()
-            vcsTag = gitTag
         }
     }
 }
@@ -84,14 +71,63 @@ artifacts {
     archives sourcesJar
 }
 
-task artifacts {
-    group = "Help"
-    description = "Displays the artifacts associated with each configuration of " + project
-    doFirst {
-        configurations.findAll().each { config ->
-            println "${config}:"
-            config.allArtifacts.getFiles().each { file -> println " " + file }
-            println ' '
+task installAndBintrayUpload(dependsOn: [install, bintrayUpload]) {
+}
+
+bintrayUpload.shouldRunAfter install
+
+install {
+    repositories.mavenInstaller {
+        pom.project {
+            name projectFriendlyName
+            description projectDescription
+            url githubUrl
+            inceptionYear '2016'
+
+            packaging 'aar'
+            groupId project.group
+            artifactId project.name
+            version project.version
+
+            licenses {
+                license {
+                    name 'BSD 2-Clause'
+                    url 'https://opensource.org/licenses/BSD-2-Clause'
+                    distribution 'repo'
+                }
+            }
+            scm {
+                connection gitUrl
+                url githubUrl
+
+            }
+            developers {
+                developer {
+                    name 'Francois Campbell'
+                    email 'campbell.francois@gmail.com'
+                }
+            }
+        }
+    }
+}
+
+bintray {
+    user = project.BINTRAY_USER
+    key = project.BINTRAY_KEY
+
+    configurations = ['archives']
+    publish = true
+    pkg {
+        repo = 'maven'
+        name = "$project.group:$project.name"
+        licenses = ['BSD 2-Clause']
+        vcsUrl = gitUrl
+        //noinspection GroovyAssignabilityCheck
+        version {
+            name = project.version
+            desc = projectDescription
+            released = new Date()
+            vcsTag = gitTag
         }
     }
 }
