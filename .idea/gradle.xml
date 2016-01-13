@@ -9,14 +9,14 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/java" />
+            <option value="$PROJECT_DIR$/library" />
             <option value="$PROJECT_DIR$/testapp" />
           </set>
         </option>
         <option name="myModules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/java" />
+            <option value="$PROJECT_DIR$/library" />
             <option value="$PROJECT_DIR$/testapp" />
           </set>
         </option>

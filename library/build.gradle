@@ -1,0 +1,97 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.jfrog.bintray'
+
+group 'io.github.francoiscampbell'
+version '0.1'
+def gitTag = "v$version"
+
+repositories {
+    maven {
+        url 'http://dl.bintray.com/francoiscampbell/maven'
+    }
+}
+
+dependencies {
+    testCompile 'junit:junit:4.12'
+}
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.2'
+    }
+}
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
+    resourcePrefix "circlelayout__"
+
+    defaultConfig {
+        minSdkVersion 1
+        targetSdkVersion 23
+        versionCode 1
+        versionName version
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+bintray {
+    user = project.BINTRAY_USER
+    key = project.BINTRAY_KEY
+
+    configurations = ['archives']
+    publish = true
+    pkg {
+        repo = 'maven'
+        name = 'io.github.francoiscampbell:circlelayout'
+        licenses = ['BSD 2-Clause']
+        vcsUrl = 'https://github.com/francoiscampbell/CircleLayout.git'
+        //noinspection GroovyAssignabilityCheck
+        version {
+            name = project.version
+            desc = 'An Android layout for arranging children along a circle'
+            released = new Date()
+            vcsTag = gitTag
+        }
+    }
+}
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+task artifacts {
+    group = "Help"
+    description = "Displays the artifacts associated with each configuration of " + project
+    doFirst {
+        configurations.findAll().each { config ->
+            println "${config}:"
+            config.allArtifacts.getFiles().each { file -> println " " + file }
+            println ' '
+        }
+    }
+}
