@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CircleLayout">
+        <attr name="centerView" format="reference" />
+        <attr name="angle" format="float" />
+        <attr name="equalAngle" format="boolean" />
+    </declare-styleable>
+</resources>
