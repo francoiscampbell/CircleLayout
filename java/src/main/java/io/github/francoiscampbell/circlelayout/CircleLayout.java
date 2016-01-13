@@ -45,7 +45,7 @@ public class CircleLayout extends ViewGroup {
         centerViewId = attributes.getResourceId(R.styleable.CircleLayout_centerView, View.NO_ID);
         angle = (float) Math.toRadians(attributes.getFloat(R.styleable.CircleLayout_angle, 0));
         angleOffset = (float) Math.toRadians(attributes.getFloat(R.styleable.CircleLayout_angleOffset, 0));
-        fixedRadius = attributes.getDimensionPixelSize(R.styleable.CircleLayout_angleOffset, 0);
+        fixedRadius = attributes.getDimensionPixelSize(R.styleable.CircleLayout_radius, 0);
         radiusOverride = attributes.getInt(R.styleable.CircleLayout_radiusOverride, RadiusOverride.FITS_LARGEST_CHILD.getValue());
         attributes.recycle();
     }
