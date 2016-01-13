@@ -2,6 +2,14 @@
 <resources>
     <declare-styleable name="CircleLayout">
         <attr name="centerView" format="reference" />
+
         <attr name="angle" format="float" />
+        <attr name="angleOffset" format="float" />
+
+        <attr name="radius" format="dimension" />
+        <attr name="radiusOverride">
+            <enum name="fitsSmallestChild" value="0" />
+            <enum name="fitsLargestChild" value="1" />
+        </attr>
     </declare-styleable>
 </resources>
