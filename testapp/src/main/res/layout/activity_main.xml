@@ -13,4 +13,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hello World!" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button" />
+
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <SeekBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 </io.github.francoiscampbell.circlelayout.CircleLayout>

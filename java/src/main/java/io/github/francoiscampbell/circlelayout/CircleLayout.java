@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 public class CircleLayout extends ViewGroup {
     private int centerViewId;
     private float angle;
-    private boolean equalAngle;
 
     public CircleLayout(Context context) {
         this(context, null);
@@ -28,7 +27,6 @@ public class CircleLayout extends ViewGroup {
         TypedArray attributes = context.obtainStyledAttributes(attrs, R.styleable.CircleLayout, defStyleAttr, 0);
         centerViewId = attributes.getResourceId(R.styleable.CircleLayout_centerView, View.NO_ID);
         angle = (float) Math.toRadians(attributes.getFloat(R.styleable.CircleLayout_angle, 0));
-        equalAngle = attributes.getBoolean(R.styleable.CircleLayout_equalAngle, true);
         attributes.recycle();
     }
 
@@ -66,7 +64,7 @@ public class CircleLayout extends ViewGroup {
         }
 
         float angleIncrement = angle;
-        if (angleIncrement == 0 || equalAngle) {
+        if (angleIncrement == 0) {
             angleIncrement = getEqualAngle(childIndex);
         }
         layoutChildrenAtFixedAngle(centerX, centerY, outerRadius, angleIncrement, childrenToLayout);

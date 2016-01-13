@@ -12,13 +12,11 @@ import android.view.ViewGroup
 class CircleLayout(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : ViewGroup(context, attrs, defStyleAttr) {
     private var centerViewId: Int
     private var angle: Float
-    private var equalAngle: Boolean
 
     init {
         val attributes = context.obtainStyledAttributes(attrs, R.styleable.CircleLayout, defStyleAttr, 0)
         centerViewId = attributes.getResourceId(R.styleable.CircleLayout_centerView, View.NO_ID)
         angle = Math.toRadians(attributes.getFloat(R.styleable.CircleLayout_angle, 0f).toDouble()).toFloat()
-        equalAngle = attributes.getBoolean(R.styleable.CircleLayout_equalAngle, true)
         attributes.recycle()
     }
 
@@ -54,7 +52,7 @@ class CircleLayout(context: Context, attrs: AttributeSet? = null, defStyleAttr: 
         }
 
         var angleIncrement = angle
-        if (angleIncrement == 0f || equalAngle) {
+        if (angleIncrement == 0f) {
             angleIncrement = getEqualAngle(childIndex)
         }
         layoutChildrenAtFixedAngle(centerX, centerY, outerRadius, angleIncrement, childrenToLayout)
