@@ -32,6 +32,7 @@ public class CircleLayout extends ViewGroup {
 
     /**
      * Initializes this layout
+     *
      * @param context A view context. Cannot be an application context.
      */
     public CircleLayout(Context context) {
@@ -40,8 +41,9 @@ public class CircleLayout extends ViewGroup {
 
     /**
      * Initializes this layout
+     *
      * @param context A view context. Cannot be an application context.
-     * @param attrs The set of attributes to customize the layout
+     * @param attrs   The set of attributes to customize the layout
      */
     public CircleLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
@@ -49,8 +51,9 @@ public class CircleLayout extends ViewGroup {
 
     /**
      * Initializes this layout
-     * @param context A view context. Cannot be an application context.
-     * @param attrs The set of attributes to customize the layout
+     *
+     * @param context      A view context. Cannot be an application context.
+     * @param attrs        The set of attributes to customize the layout
      * @param defStyleAttr The default style to use
      */
     public CircleLayout(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -98,13 +101,14 @@ public class CircleLayout extends ViewGroup {
                     && (child.getId() != centerViewId || child.getId() == View.NO_ID)
                     && child.getVisibility() != GONE) {
                 childrenToLayout[childIndex++] = child;
-            }
-            int childRadius = ViewUtils.getRadius(child);
-            if (childRadius > maxChildRadius) {
-                maxChildRadius = childRadius;
-            }
-            if (childRadius < minChildRadius) {
-                minChildRadius = childRadius;
+
+                int childRadius = ViewUtils.getRadius(child);
+                if (childRadius > maxChildRadius) {
+                    maxChildRadius = childRadius;
+                }
+                if (childRadius < minChildRadius) {
+                    minChildRadius = childRadius;
+                }
             }
         }
 
@@ -130,6 +134,7 @@ public class CircleLayout extends ViewGroup {
 
     /**
      * Splits a circle into {@code n} equal slices
+     *
      * @param n The number of slices in which to divide the circle
      * @return The angle between two adjacent slices, or 2*pi if {@code n} is zero
      */
@@ -142,12 +147,13 @@ public class CircleLayout extends ViewGroup {
 
     /**
      * Lays out the visible child views along the circle
-     * @param cx The X coordinate of the center of the circle
-     * @param cy The Y coordinate of the center of the circle
+     *
+     * @param cx             The X coordinate of the center of the circle
+     * @param cy             The Y coordinate of the center of the circle
      * @param angleIncrement The angle increment between two adjacent children
-     * @param angleOffset The starting offset angle from the horizontal axis
-     * @param radius The radius of the circle along which the centers of the children will be placed
-     * @param children The views to layout. Any null views are ignored
+     * @param angleOffset    The starting offset angle from the horizontal axis
+     * @param radius         The radius of the circle along which the centers of the children will be placed
+     * @param children       The views to layout. Any null views are ignored
      */
     private void layoutChildrenAtAngle(int cx, int cy, float angleIncrement, float angleOffset, int radius, View[] children) {
         float currentAngle = angleOffset;
@@ -166,8 +172,9 @@ public class CircleLayout extends ViewGroup {
 
     /**
      * Gets the X coordinate from a set of polar coordinates
+     *
      * @param radius The polar radius
-     * @param angle The polar angle
+     * @param angle  The polar angle
      * @return The equivalent X coordinate
      */
     public int polarToX(float radius, float angle) {
@@ -176,8 +183,9 @@ public class CircleLayout extends ViewGroup {
 
     /**
      * Gets the Y coordinate from a set of polar coordinates
+     *
      * @param radius The polar radius
-     * @param angle The polar angle
+     * @param angle  The polar angle
      * @return The equivalent Y coordinate
      */
     public int polarToY(float radius, float angle) {
