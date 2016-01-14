@@ -61,7 +61,7 @@ public class CircleLayout extends ViewGroup {
         angleOffset = (float) Math.toRadians(attributes.getFloat(R.styleable.cl_CircleLayout_cl_angleOffset, 0));
         fixedRadius = attributes.getDimensionPixelSize(R.styleable.cl_CircleLayout_cl_radius, 0);
         radiusOverride = attributes.getInt(R.styleable.cl_CircleLayout_cl_radiusPreset, FITS_LARGEST_CHILD);
-        direction = attributes.getInt(R.styleable.cl_CircleLayout_cl_direction, CLOCKWISE);
+        direction = attributes.getInt(R.styleable.cl_CircleLayout_cl_direction, COUNTER_CLOCKWISE);
         attributes.recycle();
     }
 
