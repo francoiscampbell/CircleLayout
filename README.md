@@ -15,9 +15,9 @@ You can customize the following options:
 
 Standard installation via Gradle:
 
-dependencies {
-    compile 'io.github.francoiscampbell:circlelayout:0.1.4'
-}
+    dependencies {
+        compile 'io.github.francoiscampbell:circlelayout:0.1.4'
+    }
 
 ## Examples
 
