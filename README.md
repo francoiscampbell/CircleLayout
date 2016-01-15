@@ -1,3 +1,5 @@
+![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-CircleLayout-green.svg?style=true)
+
 # CircleLayout
 An Android layout for arranging children along a circle
 
@@ -8,6 +10,14 @@ You can customize the following options:
 * `cl_radius`: Choose a specifoc radius for the circle. Overrides `cl_radiusPreset`
 * `cl_radiusPreset`: Either `fitsSmallestChild` or `fitsLargestChild`. Automatically picks a radius that will place either the smallest or the largest child view at the outer boundary (minus any padding) and layout the rest along the same radius
 * `cl_direction`: Either `clockwise` or `counterClockwise`
+
+## Installation
+
+Standard installation via Gradle:
+
+dependencies {
+    compile 'io.github.francoiscampbell:circlelayout:0.1.4'
+}
 
 ## Examples
 
