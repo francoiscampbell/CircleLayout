@@ -1,3 +1,5 @@
+[![Android Gems](http://www.android-gems.com/badge/francoiscampbell/CircleLayout.svg?branch=master)](http://www.android-gems.com/lib/francoiscampbell/CircleLayout)
+
 ![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-CircleLayout-green.svg?style=true)
 
 # CircleLayout
