@@ -1,6 +1,6 @@
 [![Android Gems](http://www.android-gems.com/badge/francoiscampbell/CircleLayout.svg?branch=master)](http://www.android-gems.com/lib/francoiscampbell/CircleLayout)
 
-![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-CircleLayout-green.svg?style=true)
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-CircleLayout-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/3028)
 
 # CircleLayout
 An Android layout for arranging children along a circle
