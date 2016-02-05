@@ -7,10 +7,6 @@ import android.view.ViewGroup
 
 /**
  * A layout that lays out its children in a circle
- */
-class CircleLayout
-/**
- * Initializes this layout
 
  * @param context      A view context. Cannot be an application context.
  * *
@@ -18,7 +14,7 @@ class CircleLayout
  * *
  * @param defStyleAttr The default style to use
  */
-@JvmOverloads constructor(context: Context, attrs: AttributeSet = null, defStyleAttr: Int = 0) : ViewGroup(context, attrs, defStyleAttr) {
+class CircleLayout(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : ViewGroup(context, attrs, defStyleAttr) {
 
     private val centerViewId: Int
     private val angle: Float
@@ -56,9 +52,7 @@ class CircleLayout
         val outerRadius = Math.min(displayAreaWidth, displayAreaHeight) / 2
 
         val centerView = findViewById(centerViewId)
-        if (centerView != null) {
-            ViewUtils.layoutFromCenter(centerView, centerX, centerY)
-        }
+        centerView?.layoutFromCenter(centerX, centerY)
 
         val childCount = childCount
         val childrenToLayout = arrayOfNulls<View>(childCount)
@@ -66,18 +60,18 @@ class CircleLayout
         var minChildRadius = outerRadius
         var maxChildRadius = 0
         for (i in 0..childCount - 1) {
-            val child = getChildAt(i)
-            if (child != null
-                    && (child.id != centerViewId || child.id == View.NO_ID)
-                    && child.visibility != View.GONE) {
-                childrenToLayout[childIndex++] = child
-
-                val childRadius = ViewUtils.getRadius(child)
-                if (childRadius > maxChildRadius) {
-                    maxChildRadius = childRadius
+            this[i].let {
+                if (!(id != centerViewId || id == NO_ID) || visibility == GONE) {
+                    return
                 }
-                if (childRadius < minChildRadius) {
-                    minChildRadius = childRadius
+                childrenToLayout[childIndex++] = this
+                when {
+                    radius > maxChildRadius -> {
+                        maxChildRadius = radius
+                    }
+                    radius < minChildRadius -> {
+                        minChildRadius = radius
+                    }
                 }
             }
         }
@@ -105,17 +99,11 @@ class CircleLayout
     /**
      * Splits a circle into `n` equal slices
 
-     * @param n The number of slices in which to divide the circle
+     * @param numSlices The number of slices in which to divide the circle
      * *
      * @return The angle between two adjacent slices, or 2*pi if `n` is zero
      */
-    private fun getEqualAngle(n: Int): Float {
-        var n = n
-        if (n == 0) {
-            n = 1
-        }
-        return 2 * Math.PI.toFloat() / n
-    }
+    private fun getEqualAngle(numSlices: Int): Float = 2 * Math.PI.toFloat() / if (numSlices == 0) 1 else numSlices
 
     /**
      * Lays out the visible child views along the circle
@@ -132,16 +120,16 @@ class CircleLayout
      * *
      * @param children       The views to layout. Any null views are ignored
      */
-    private fun layoutChildrenAtAngle(cx: Int, cy: Int, angleIncrement: Float, angleOffset: Float, radius: Int, children: Array<View>) {
+    private fun layoutChildrenAtAngle(cx: Int, cy: Int, angleIncrement: Float, angleOffset: Float, radius: Int, children: Array<View?>) {
         var currentAngle = angleOffset
-        for (child in children) {
-            if (child == null) {
-                continue
+        children.forEach {
+            if (it == null) {
+                return
             }
 
             val childCenterX = polarToX(radius.toFloat(), currentAngle)
             val childCenterY = polarToY(radius.toFloat(), currentAngle)
-            ViewUtils.layoutFromCenter(child, cx + childCenterX, cy - childCenterY)
+            it.layoutFromCenter(cx + childCenterX, cy - childCenterY)
 
             currentAngle += angleIncrement * direction
         }
@@ -156,9 +144,7 @@ class CircleLayout
      * *
      * @return The equivalent X coordinate
      */
-    fun polarToX(radius: Float, angle: Float): Int {
-        return (radius * Math.cos(angle.toDouble())).toInt()
-    }
+    fun polarToX(radius: Float, angle: Float): Int = (radius * Math.cos(angle.toDouble())).toInt()
 
     /**
      * Gets the Y coordinate from a set of polar coordinates
@@ -169,12 +155,10 @@ class CircleLayout
      * *
      * @return The equivalent Y coordinate
      */
-    fun polarToY(radius: Float, angle: Float): Int {
-        return (radius * Math.sin(angle.toDouble())).toInt()
-    }
+    fun polarToY(radius: Float, angle: Float): Int = (radius * Math.sin(angle.toDouble())).toInt()
+
 
     companion object {
-
         /**
          * The type of override for the radius of the circle
          */
@@ -188,16 +172,4 @@ class CircleLayout
         private val CLOCKWISE = -1
     }
 }
-/**
- * Initializes this layout
-
- * @param context A view context. Cannot be an application context.
- */
-/**
- * Initializes this layout
-
- * @param context A view context. Cannot be an application context.
- * *
- * @param attrs   The set of attributes to customize the layout
- */
 
