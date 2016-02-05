@@ -18,11 +18,9 @@ class CircleLayout(context: Context, attrs: AttributeSet? = null, defStyleAttr: 
     var angleOffset: Float
     var fixedRadius: Int
     var radiusPreset = FITS_LARGEST_CHILD
-        set(newRadiusPreset: Int) = when {
-            newRadiusPreset != FITS_LARGEST_CHILD && newRadiusPreset != FITS_SMALLEST_CHILD -> {
-                throw IllegalArgumentException("radiusPreset must be either FITS_LARGEST_CHILD or FITS_SMALLEST_CHILD")
-            }
-            else -> field = newRadiusPreset
+        set(newRadiusPreset: Int) = when (newRadiusPreset) {
+            FITS_LARGEST_CHILD, FITS_SMALLEST_CHILD -> field = newRadiusPreset
+            else -> throw IllegalArgumentException("radiusPreset must be either FITS_LARGEST_CHILD or FITS_SMALLEST_CHILD")
         }
     var direction = COUNTER_CLOCKWISE
         set(newDirection: Int) = when {
