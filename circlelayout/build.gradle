@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
+apply plugin: 'kotlin-android'
 
 def githubUrl = 'https://github.com/francoiscampbell/CircleLayout'
 def gitUrl = "${githubUrl}.git"
@@ -20,6 +21,7 @@ repositories {
 
 dependencies {
     testCompile 'junit:junit:4.12'
+    compile 'org.jetbrains.kotlin:kotlin-stdlib:1.0.0-rc-1036'
 }
 
 buildscript {
@@ -48,6 +50,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
     }
 }
 
