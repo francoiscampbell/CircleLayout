@@ -7,6 +7,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:2.0.0-alpha7'
         classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.0.0-rc-1036'
+        classpath "org.jetbrains.dokka:dokka-gradle-plugin:0.9.6"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
