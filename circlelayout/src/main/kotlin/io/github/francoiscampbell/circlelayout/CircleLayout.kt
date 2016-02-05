@@ -12,7 +12,9 @@ import java.util.*
  * @param attrs        The set of attributes to customize the layout
  * @param defStyleAttr The default style to use
  */
-class CircleLayout(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : ViewGroup(context, attrs, defStyleAttr) {
+class CircleLayout
+@JvmOverloads
+constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : ViewGroup(context, attrs, defStyleAttr) {
 
     var angle: Float
     var angleOffset: Float
