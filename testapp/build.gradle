@@ -26,7 +26,7 @@ android {
 dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'org.jetbrains.kotlin:kotlin-stdlib:1.0.0-rc-1036'
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 //    compile 'io.github.francoiscampbell:circlelayout:0.1.1'
     compile project(':circlelayout')
 }
