@@ -74,8 +74,8 @@ dokka {
 }
 
 task javadocJar(type: Jar, dependsOn: dokka) {
-    classifier = 'javadoc'
     from dokka.outputDirectory
+    classifier = 'javadoc'
 }
 
 artifacts {
