@@ -23,22 +23,28 @@ class CircleLayout @JvmOverloads constructor(
         defStyleAttr,
         defStyleRes
 ) {
-    var angle: Float
-    var angleOffset: Float
-    var fixedRadius: Int
-    var radiusPreset = FITS_LARGEST_CHILD
-        set(newRadiusPreset: Int) = when (newRadiusPreset) {
-            FITS_LARGEST_CHILD, FITS_SMALLEST_CHILD -> field = newRadiusPreset
-            else -> throw IllegalArgumentException("radiusPreset must be either FITS_LARGEST_CHILD or FITS_SMALLEST_CHILD")
+    var angle: Float = 0f
+        set (value) {
+            field = value
+            requestLayout()
+        }
+    var angleOffset: Float = 0f
+        set (value) {
+            field = value
+            requestLayout()
+        }
+    var radius = FITS_LARGEST_CHILD
+        set(value) {
+            field = value
+            requestLayout()
         }
     var direction = COUNTER_CLOCKWISE
-        set(newDirection: Int) = when {
-            newDirection > 0 -> field = 1
-            newDirection < 0 -> field = -1
-            else -> throw IllegalArgumentException("direction must be either positive or negative")
+        set(value) {
+            field = Math.signum(value.toFloat()).toInt()
+            requestLayout()
         }
 
-    val layoutHasCenterView: Boolean
+    val hasCenterView: Boolean
         get() = centerViewId != View.NO_ID
 
     private var centerViewId: Int
@@ -60,8 +66,7 @@ class CircleLayout @JvmOverloads constructor(
         centerViewId = attributes.getResourceId(R.styleable.CircleLayout_cl_centerView, NO_ID)
         angle = Math.toRadians(attributes.getFloat(R.styleable.CircleLayout_cl_angle, 0f).toDouble()).toFloat()
         angleOffset = Math.toRadians(attributes.getFloat(R.styleable.CircleLayout_cl_angleOffset, 0f).toDouble()).toFloat()
-        fixedRadius = attributes.getDimensionPixelSize(R.styleable.CircleLayout_cl_radius, 0)
-        radiusPreset = attributes.getInt(R.styleable.CircleLayout_cl_radiusPreset, FITS_LARGEST_CHILD)
+        radius = attributes.getInt(R.styleable.CircleLayout_cl_radius, FITS_LARGEST_CHILD)
         direction = attributes.getInt(R.styleable.CircleLayout_cl_direction, COUNTER_CLOCKWISE)
         attributes.recycle()
     }
@@ -95,7 +100,7 @@ class CircleLayout @JvmOverloads constructor(
         var maxChildRadius = 0
         childrenToLayout.clear()
         forEachChild {
-            if (layoutHasCenterView && id == centerViewId || visibility == GONE) {
+            if (hasCenterView && id == centerViewId || visibility == GONE) {
                 return@forEachChild
             }
             childrenToLayout.add(this)
@@ -106,7 +111,7 @@ class CircleLayout @JvmOverloads constructor(
         val angleIncrement = if (angle != 0f) angle else getEqualAngle(childrenToLayout.size)
 
         //choose radius
-        val layoutRadius = if (fixedRadius != 0) fixedRadius else getLayoutRadius(outerRadius, maxChildRadius, minChildRadius)
+        val layoutRadius = getLayoutRadius(outerRadius, maxChildRadius, minChildRadius)
 
         layoutChildrenAtAngle(centerX, centerY, angleIncrement, angleOffset, layoutRadius, childrenToLayout)
     }
@@ -118,10 +123,10 @@ class CircleLayout @JvmOverloads constructor(
      * @return The radius of the layout path along which the children will be placed
      */
     private fun getLayoutRadius(outerRadius: Int, maxChildRadius: Int, minChildRadius: Int): Int {
-        return when (radiusPreset) {
+        return when (radius) {
             FITS_LARGEST_CHILD -> outerRadius - maxChildRadius
             FITS_SMALLEST_CHILD -> outerRadius - minChildRadius
-            else -> outerRadius - maxChildRadius
+            else -> Math.abs(radius)
         }
     }
 
@@ -173,14 +178,14 @@ class CircleLayout @JvmOverloads constructor(
         /**
          * The type of override for the radius of the circle
          */
-        private val FITS_SMALLEST_CHILD = 0
-        private val FITS_LARGEST_CHILD = 1
+        val FITS_SMALLEST_CHILD = -1
+        val FITS_LARGEST_CHILD = -2
 
         /**
          * The direction of rotation, 1 for counter-clockwise, -1 for clockwise
          */
-        private val COUNTER_CLOCKWISE = 1
-        private val CLOCKWISE = -1
+        val COUNTER_CLOCKWISE = 1
+        val CLOCKWISE = -1
     }
 }
 
