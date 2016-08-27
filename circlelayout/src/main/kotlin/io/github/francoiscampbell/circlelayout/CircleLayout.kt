@@ -12,10 +12,17 @@ import java.util.*
  * @param attrs        The set of attributes to customize the layout
  * @param defStyleAttr The default style to use
  */
-class CircleLayout
-@JvmOverloads
-constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : ViewGroup(context, attrs, defStyleAttr) {
-
+class CircleLayout @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null,
+        defStyleAttr: Int = 0,
+        defStyleRes: Int = 0)
+: ViewGroup(
+        context,
+        attrs,
+        defStyleAttr,
+        defStyleRes
+) {
     var angle: Float
     var angleOffset: Float
     var fixedRadius: Int
@@ -49,13 +56,13 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
     private val childrenToLayout = LinkedList<View>()
 
     init {
-        val attributes = context.obtainStyledAttributes(attrs, R.styleable.cl_CircleLayout, defStyleAttr, 0)
-        centerViewId = attributes.getResourceId(R.styleable.cl_CircleLayout_cl_centerView, NO_ID)
-        angle = Math.toRadians(attributes.getFloat(R.styleable.cl_CircleLayout_cl_angle, 0f).toDouble()).toFloat()
-        angleOffset = Math.toRadians(attributes.getFloat(R.styleable.cl_CircleLayout_cl_angleOffset, 0f).toDouble()).toFloat()
-        fixedRadius = attributes.getDimensionPixelSize(R.styleable.cl_CircleLayout_cl_radius, 0)
-        radiusPreset = attributes.getInt(R.styleable.cl_CircleLayout_cl_radiusPreset, FITS_LARGEST_CHILD)
-        direction = attributes.getInt(R.styleable.cl_CircleLayout_cl_direction, COUNTER_CLOCKWISE)
+        val attributes = context.obtainStyledAttributes(attrs, R.styleable.CircleLayout, defStyleAttr, 0)
+        centerViewId = attributes.getResourceId(R.styleable.CircleLayout_cl_centerView, NO_ID)
+        angle = Math.toRadians(attributes.getFloat(R.styleable.CircleLayout_cl_angle, 0f).toDouble()).toFloat()
+        angleOffset = Math.toRadians(attributes.getFloat(R.styleable.CircleLayout_cl_angleOffset, 0f).toDouble()).toFloat()
+        fixedRadius = attributes.getDimensionPixelSize(R.styleable.CircleLayout_cl_radius, 0)
+        radiusPreset = attributes.getInt(R.styleable.CircleLayout_cl_radiusPreset, FITS_LARGEST_CHILD)
+        direction = attributes.getInt(R.styleable.CircleLayout_cl_direction, COUNTER_CLOCKWISE)
         attributes.recycle()
     }
 

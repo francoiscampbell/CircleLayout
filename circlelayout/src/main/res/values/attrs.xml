@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="cl_CircleLayout">
+    <declare-styleable name="CircleLayout">
         <attr name="cl_centerView" format="reference" />
 
         <attr name="cl_angle" format="float" />
