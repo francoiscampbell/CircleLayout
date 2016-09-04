@@ -20,8 +20,7 @@ class CircleLayout @JvmOverloads constructor(
 : ViewGroup(
         context,
         attrs,
-        defStyleAttr,
-        defStyleRes
+        defStyleAttr
 ) {
     /**
      * (Optional) A fixed angle between views.
