@@ -14,10 +14,20 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         ObjectAnimator.ofInt(circleLayout, "radius", 0, 500)
-                .setDuration(300)
+                .setDuration(1000)
                 .apply {
                     repeatMode = ObjectAnimator.REVERSE
                     repeatCount = ObjectAnimator.INFINITE
+                    addUpdateListener { Log.i(TAG, "animatedValue: ${it.animatedValue}"); }
+                }
+                .start()
+
+        ObjectAnimator.ofFloat(circleLayout, "angleOffset", 0f, 360f)
+                .setDuration(10000)
+                .apply {
+                    repeatMode = ObjectAnimator.RESTART
+                    repeatCount = ObjectAnimator.INFINITE
+                    interpolator = null
                     addUpdateListener { Log.i(TAG, "animatedValue: ${it.animatedValue}"); }
                 }
                 .start()

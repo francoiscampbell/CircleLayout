@@ -23,49 +23,71 @@ class CircleLayout @JvmOverloads constructor(
         defStyleAttr,
         defStyleRes
 ) {
+    /**
+     * (Optional) A fixed angle between views.
+     */
     var angle: Float = 0f
         set (value) {
-            field = value
+            field = value % 360f
             requestLayout()
         }
+
+    /**
+     *  The initial angle of the layout pass. A value of 0 will start laying out from the horizontal axis. Defaults to 0.
+     */
     var angleOffset: Float = 0f
         set (value) {
-            field = value
+            field = value % 360f
             requestLayout()
         }
+
+    /**
+     * The radius of the circle. Use a dimension, <code>FITS_SMALLEST_CHILD</code>, or <code>FITS_LARGEST_CHILD</code>. Defaults to <code>FITS_LARGEST_CHILD</code>.
+     */
     var radius = FITS_LARGEST_CHILD
         set(value) {
             field = value
             requestLayout()
         }
+
+    /**
+     * The layout direction. Takes the sign (+/-) of the value only. Defaults to <code>COUNTER_CLOCKWISE</code>.
+     */
     var direction = COUNTER_CLOCKWISE
         set(value) {
             field = Math.signum(value.toFloat()).toInt()
             requestLayout()
         }
 
+    /**
+     * Whether this layout currently has a visible view in the center
+     */
     val hasCenterView: Boolean
-        get() = centerViewId != View.NO_ID
+        get() = centerView != null && centerView?.visibility != GONE
 
     private var centerViewId: Int
+
+    /**
+     * The view shown in the center of the circle
+     */
     var centerView: View? = null
-        set(newCenterView: View?) = when {
-            newCenterView != null && indexOfChild(newCenterView) == -1 -> {
+        set(newCenterView) {
+            if (newCenterView != null && indexOfChild(newCenterView) == -1) {
                 throw IllegalArgumentException("View with ID ${newCenterView.id} is not a child of this layout")
             }
-            else -> {
-                field = newCenterView
-                centerViewId = newCenterView?.id ?: NO_ID
-            }
+            field = newCenterView
+            centerViewId = newCenterView?.id ?: NO_ID
+            requestLayout()
         }
 
+    // Pre-allocate to avoid object allocation in onLayout
     private val childrenToLayout = LinkedList<View>()
 
     init {
-        val attributes = context.obtainStyledAttributes(attrs, R.styleable.CircleLayout, defStyleAttr, 0)
+        val attributes = context.obtainStyledAttributes(attrs, R.styleable.CircleLayout, defStyleAttr, defStyleRes)
         centerViewId = attributes.getResourceId(R.styleable.CircleLayout_cl_centerView, NO_ID)
-        angle = Math.toRadians(attributes.getFloat(R.styleable.CircleLayout_cl_angle, 0f).toDouble()).toFloat()
-        angleOffset = Math.toRadians(attributes.getFloat(R.styleable.CircleLayout_cl_angleOffset, 0f).toDouble()).toFloat()
+        angle = attributes.getFloat(R.styleable.CircleLayout_cl_angle, 0f)
+        angleOffset = attributes.getFloat(R.styleable.CircleLayout_cl_angleOffset, 0f)
         radius = attributes.getInt(R.styleable.CircleLayout_cl_radius, FITS_LARGEST_CHILD)
         direction = attributes.getInt(R.styleable.CircleLayout_cl_direction, COUNTER_CLOCKWISE)
         attributes.recycle()
@@ -99,13 +121,14 @@ class CircleLayout @JvmOverloads constructor(
         var minChildRadius = outerRadius
         var maxChildRadius = 0
         childrenToLayout.clear()
-        forEachChild {
-            if (hasCenterView && id == centerViewId || visibility == GONE) {
-                return@forEachChild
+        for (i in 0..childCount - 1) {
+            val child = getChildAt(i)
+            if ((hasCenterView && child.id == centerViewId) || child.visibility == GONE) {
+                continue
             }
-            childrenToLayout.add(this)
-            maxChildRadius = Math.max(maxChildRadius, radius)
-            minChildRadius = Math.min(minChildRadius, radius)
+            childrenToLayout.add(child)
+            maxChildRadius = Math.max(maxChildRadius, child.radius)
+            minChildRadius = Math.min(minChildRadius, child.radius)
         }
         //choose angle increment
         val angleIncrement = if (angle != 0f) angle else getEqualAngle(childrenToLayout.size)
@@ -122,7 +145,7 @@ class CircleLayout @JvmOverloads constructor(
      * @param minChildRadius The radius of the smallest child
      * @return The radius of the layout path along which the children will be placed
      */
-    private fun getLayoutRadius(outerRadius: Int, maxChildRadius: Int, minChildRadius: Int): Int {
+    fun getLayoutRadius(outerRadius: Int, maxChildRadius: Int, minChildRadius: Int): Int {
         return when (radius) {
             FITS_LARGEST_CHILD -> outerRadius - maxChildRadius
             FITS_SMALLEST_CHILD -> outerRadius - minChildRadius
@@ -131,61 +154,69 @@ class CircleLayout @JvmOverloads constructor(
     }
 
     /**
-     * Splits a circle into `n` equal slices
+     * Splits a circle into <code>n</code> equal slices
      * @param numSlices The number of slices in which to divide the circle
-     * @return The angle between two adjacent slices, or 2*pi if `n` is zero
+     * @return The angle between two adjacent slices in degrees, or 360 if <code>n</code> is zero
      */
-    private fun getEqualAngle(numSlices: Int): Float = 2 * Math.PI.toFloat() / if (numSlices != 0) numSlices else 1
+    fun getEqualAngle(numSlices: Int): Float = 360f / if (numSlices != 0) numSlices else 1
 
     /**
      * Lays out the child views along a circle
      * @param cx                    The X coordinate of the center of the circle
      * @param cy                    The Y coordinate of the center of the circle
-     * @param angleIncrement        The angle increment between two adjacent children
-     * @param angleOffset           The starting offset angle from the horizontal axis
+     * @param angleIncrement        The angle increment between two adjacent children, in degrees
+     * @param angleOffset           The starting offset angle from the horizontal axis, in degrees
      * @param radius                The radius of the circle along which the centers of the children will be placed
      * @param childrenToLayout      The views to layout
      */
     private fun layoutChildrenAtAngle(cx: Int, cy: Int, angleIncrement: Float, angleOffset: Float, radius: Int, childrenToLayout: List<View>) {
-        var currentAngle = angleOffset
-        childrenToLayout.forEach {
-            val childCenterX = polarToX(radius.toFloat(), currentAngle)
-            val childCenterY = polarToY(radius.toFloat(), currentAngle)
-            it.layoutFromCenter(cx + childCenterX, cy - childCenterY)
+        val angleIncrementRad = Math.toRadians(angleIncrement.toDouble())
+        var currentAngleRad = Math.toRadians(angleOffset.toDouble())
+        for (i in 0..childrenToLayout.size - 1) {
+            val child = childrenToLayout[i]
+            val childCenterX = polarToX(radius.toDouble(), currentAngleRad)
+            val childCenterY = polarToY(radius.toDouble(), currentAngleRad)
+            child.layoutFromCenter((cx + childCenterX).toInt(), (cy - childCenterY).toInt())
 
-            currentAngle += angleIncrement * direction
+            currentAngleRad += angleIncrementRad * direction
         }
     }
 
     /**
      * Gets the X coordinate from a set of polar coordinates
      * @param radius The polar radius
-     * @param angle  The polar angle
+     * @param angle  The polar angle, in radians
      * @return The equivalent X coordinate
      */
-    fun polarToX(radius: Float, angle: Float): Int = (radius * Math.cos(angle.toDouble())).toInt()
+    fun polarToX(radius: Double, angle: Double) = radius * Math.cos(angle)
 
     /**
      * Gets the Y coordinate from a set of polar coordinates
      * @param radius The polar radius
-     * @param angle  The polar angle
+     * @param angle  The polar angle, in radians
      * @return The equivalent Y coordinate
      */
-    fun polarToY(radius: Float, angle: Float): Int = (radius * Math.sin(angle.toDouble())).toInt()
+    fun polarToY(radius: Double, angle: Double) = radius * Math.sin(angle)
 
 
     companion object {
         /**
-         * The type of override for the radius of the circle
+         * Will adjust the radius to make the smallest child fit in the layout and larger children will bleed outside the radius.
          */
-        val FITS_SMALLEST_CHILD = -1
-        val FITS_LARGEST_CHILD = -2
+        const val FITS_SMALLEST_CHILD = -1
+        /**
+         * Will adjust the radius to make the largest child fit in the layout.
+         */
+        const val FITS_LARGEST_CHILD = -2
 
         /**
-         * The direction of rotation, 1 for counter-clockwise, -1 for clockwise
+         * For use with <code>setDirection</code>
          */
-        val COUNTER_CLOCKWISE = 1
-        val CLOCKWISE = -1
+        const val COUNTER_CLOCKWISE = 1
+        /**
+         * For use with <code>setDirection</code>
+         */
+        const val CLOCKWISE = -1
     }
 }
 
