@@ -9,8 +9,7 @@ You can customize the following options:
 * `cl_centerView`: Set a specific view ID to be in the center of the circle
 * `cl_angle`: Choose a specific angle between the children or arrange them equally (default: 0)
 * `cl_angleOffset`: Start the circle at an offset in degrees relative to the horizontal axis (default: 0)
-* `cl_radius`: Choose a specific radius for the circle. Overrides `cl_radiusPreset`.
-* `cl_radiusPreset`: Either `fitsSmallestChild` or `fitsLargestChild`. Automatically picks a radius that will place either the smallest or the largest child view at the outer boundary (minus any padding) and layout the rest along the same radius (default: `fitsLargestChild`)
+* `cl_radius`: Choose a specific radius for the circle or a preset. `fitsSmallestChild` and `fitsLargestChild` will automatically pick a radius that will place either the smallest or the largest child view at the outer boundary (minus any padding) and layout the rest along the same radius (default: `fitsLargestChild`)
 * `cl_direction`: Either `clockwise` or `counterClockwise` (default: `counterClockwise`)
 
 ## Installation
@@ -18,7 +17,7 @@ You can customize the following options:
 Standard installation via Gradle:
 
     dependencies {
-        compile 'io.github.francoiscampbell:circlelayout:0.1.4'
+        compile 'io.github.francoiscampbell:circlelayout:0.3.0'
     }
 
 ## Examples
