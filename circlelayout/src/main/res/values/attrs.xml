@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="CircleLayout">
+        <!-- (Optional) The ID of the child to show at the center of the layout. -->
         <attr name="cl_centerView" format="reference" />
 
+        <!-- (Optional) A fixed angle between views. -->
         <attr name="cl_angle" format="float" />
+
+        <!-- The initial angle of the layout pass. A value of 0 will start laying out from the horizontal axis. Defaults to 0. -->
         <attr name="cl_angleOffset" format="float" />
 
-        <attr name="cl_radius" format="dimension" />
-        <attr name="cl_radiusPreset">
-            <enum name="fitsSmallestChild" value="0" />
-            <enum name="fitsLargestChild" value="1" />
+        <!-- The radius of the circle. Use a dimension, {@code fitsSmallestChild}, or {@code fitsLargestChild}. Defaults to {@code fitsLargestChild}. -->
+        <attr name="cl_radius" format="dimension">
+            <!-- Will adjust the radius to make the smallest child fit in the layout and larger children will bleed outside the radius. -->
+            <enum name="fitsSmallestChild" value="-1" />
+
+            <!-- Will adjust the radius to make the largest child fit in the layout. -->
+            <enum name="fitsLargestChild" value="-2" />
         </attr>
+
+        <!-- The layout direction. Defaults to {@code counterClockwise}. -->
         <attr name="cl_direction">
             <enum name="clockwise" value="-1" />
             <enum name="counterClockwise" value="1" />

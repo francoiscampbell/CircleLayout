@@ -12,7 +12,7 @@ def projectFriendlyName = 'CircleLayout'
 def projectDescription = 'An Android layout for arranging children along a circle'
 
 group 'io.github.francoiscampbell'
-version '0.2.0'
+version '0.3.0'
 
 repositories {
     maven {

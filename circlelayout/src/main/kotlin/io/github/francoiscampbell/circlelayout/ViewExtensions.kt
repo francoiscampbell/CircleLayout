@@ -1,7 +1,6 @@
 package io.github.francoiscampbell.circlelayout
 
 import android.view.View
-import android.view.ViewGroup
 
 /**
  * Created by francois on 2016-01-12.
@@ -23,10 +22,4 @@ fun View.layoutFromCenter(cx: Int, cy: Int) {
     val right = left + measuredWidth
     val bottom = top + measuredHeight
     layout(left, top, right, bottom)
-}
-
-inline fun ViewGroup.forEachChild(action: View.() -> Unit): Unit {
-    repeat(childCount, { index ->
-        getChildAt(index).action()
-    })
 }
